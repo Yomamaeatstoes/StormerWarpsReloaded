@@ -1,6 +1,14 @@
+Replace:
+
+```text
+src/main/java/me/loving11ish/stormerwarpsreloaded/models/Warp.java
+```
+
+with this whole file:
+
+```java
 package me.loving11ish.stormerwarpsreloaded.models;
 
-import io.papermc.lib.PaperLib;
 import me.loving11ish.stormerwarpsreloaded.StormerWarpsReloaded;
 import me.loving11ish.stormerwarpsreloaded.utils.Message;
 import org.bukkit.Location;
@@ -88,7 +96,7 @@ public class Warp {
             Iterator var3 = all.iterator();
 
             while(var3.hasNext()) {
-                Warp warp = (Warp) var3.next();
+                Warp warp = (Warp)var3.next();
                 if (!warp.opOnly) {
                     warps.add(warp);
                 }
@@ -100,7 +108,7 @@ public class Warp {
 
     public void warp(Player p) {
         Message.normal(p, "Going to " + this.getName());
-        PaperLib.teleportAsync(p, this.getLocation());
+        StormerWarpsReloaded.i.getFoliaLib().getImpl().teleportAsync(p, this.getLocation());
     }
 
     public Location getLocation() {
@@ -131,3 +139,4 @@ public class Warp {
         this.opOnly = opOnly;
     }
 }
+```
