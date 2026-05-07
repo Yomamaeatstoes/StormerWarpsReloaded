@@ -1,8 +1,15 @@
+Replace:
+
+```text
+src/main/java/me/loving11ish/stormerwarpsreloaded/StormerWarpsReloaded.java
+```
+
+with this whole file:
+
+```java
 package me.loving11ish.stormerwarpsreloaded;
 
-import com.rylinaux.plugman.api.PlugManAPI;
 import com.tcoded.folialib.FoliaLib;
-import io.papermc.lib.PaperLib;
 import me.loving11ish.stormerwarpsreloaded.commands.WarpCommand;
 import me.loving11ish.stormerwarpsreloaded.commands.WarpTabCompleter;
 import me.loving11ish.stormerwarpsreloaded.files.MessagesFileManager;
@@ -24,49 +31,14 @@ public final class StormerWarpsReloaded extends JavaPlugin {
     private FoliaLib foliaLib = new FoliaLib(this);
     Logger logger = this.getLogger();
 
+    public FoliaLib getFoliaLib() {
+        return foliaLib;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
         i = this;
-
-        //Suggest PaperMC if not using
-        if (foliaLib.isUnsupported()||foliaLib.isSpigot()){
-            PaperLib.suggestPaper(this);
-        }
-
-        //Check if PlugManX is enabled
-        if (isPlugManXEnabled()) {
-            if (!PlugManAPI.iDoNotWantToBeUnOrReloaded("StormerWarpsReloaded")) {
-                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
-                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
-                logger.severe(ColorUtils.translateColorCodes("&4WARNING WARNING WARNING WARNING!"));
-                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
-                logger.severe(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &4You appear to be using an unsupported version of &d&lPlugManX"));
-                logger.severe(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &4Please &4&lDO NOT USE PLUGMANX TO LOAD/UNLOAD/RELOAD THIS PLUGIN!"));
-                logger.severe(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &4Please &4&lFULLY RESTART YOUR SERVER!"));
-                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
-                logger.severe(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &4This plugin &4&lHAS NOT &4been validated to use this version of PlugManX!"));
-                logger.severe(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &4&lNo official support will be given to you if you use this!"));
-                logger.severe(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &4&lUnless Loving11ish has explicitly agreed to help!"));
-                logger.severe(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &4Please add StormerWarpsReloaded to the ignored-plugins list in PlugManX's config.yml"));
-                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
-                logger.severe(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &6Continuing plugin startup"));
-                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
-                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
-            }else {
-                logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
-                logger.info(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &aSuccessfully hooked into PlugManX"));
-                logger.info(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &aSuccessfully added StormerWarpsReloaded to ignoredPlugins list."));
-                logger.info(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &6Continuing plugin startup"));
-                logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
-            }
-        }else {
-            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-            logger.info(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &cPlugManX not found!"));
-            logger.info(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &cDisabling PlugManX hook loader"));
-            logger.info(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &6Continuing plugin startup"));
-            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-        }
 
         //Load main plugin config
         this.loadConfig();
@@ -93,7 +65,7 @@ public final class StormerWarpsReloaded extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        foliaLib.getImpl().cancelAllTasks();
     }
 
     public void loadConfig() {
@@ -199,17 +171,5 @@ public final class StormerWarpsReloaded extends JavaPlugin {
             }
         }
     }
-
-    public boolean isPlugManXEnabled() {
-        try {
-            Class.forName("com.rylinaux.plugman.PlugMan");
-            logger.info(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &aFound PlugManX main class at:"));
-            logger.info(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &dcom.rylinaux.plugman.PlugMan"));
-            return true;
-        } catch (ClassNotFoundException e) {
-            logger.warning(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &aCould not find PlugManX main class at:"));
-            logger.warning(ColorUtils.translateColorCodes("&6StormerWarpsReloaded: &dcom.rylinaux.plugman.PlugMan"));
-            return false;
-        }
-    }
 }
+```
